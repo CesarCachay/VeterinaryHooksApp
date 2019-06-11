@@ -1,41 +1,26 @@
 import React, { useState } from "react";
 
-function Form() {
+import Form from "./components/Form";
+
+function Appointment({ appointment }) {
   return (
-    <>
-      <h2>Crear Cita</h2>
-
-      <form>
-        <label>Nombre Mascota</label>
-        <input
-          type="text"
-          name="patient"
-          className="u-full-width"
-          placeholder="Nombre Mascota"
-        />
-
-        <label>Nombre Dueño</label>
-        <input
-          type="text"
-          name="owner"
-          className="u-full-width"
-          placeholder="Nombre Dueño de la Mascota"
-        />
-
-        <label>Fecha</label>
-        <input type="date" className="u-full-width" name="date" />
-
-        <label>Hora</label>
-        <input type="time" className="u-full-width" name="time" />
-
-        <label>Sintomas</label>
-        <textarea className="u-full-width" name="symptoms" />
-
-        <button type="submit" className="button-primary u-full-width">
-          Agregar
-        </button>
-      </form>
-    </>
+    <div className="appointment">
+      <p>
+        Patient: <span>{appointment.patient}</span>
+      </p>
+      <p>
+        Owner: <span>{appointment.owner}</span>
+      </p>
+      <p>
+        Date: <span>{appointment.date}</span>
+      </p>
+      <p>
+        Time: <span>{appointment.time}</span>
+      </p>
+      <p>
+        Symptoms: <span>{appointment.symptoms}</span>
+      </p>
+    </div>
   );
 }
 
@@ -43,7 +28,14 @@ function App() {
   //use State return 2 pieces
   // state = this.state
   // The function that update state is setState = this.setState()
-  const [state, setState] = useState([]);
+  const [realAppointments, setRealAppointments] = useState([]);
+
+  // Function that will allow us to create appointments
+  const makeAppointment = appointment => {
+    // This takes a copy of the state & concat the new appointment another way setRealAppointments(realAppointments.concat(appointment));
+    setRealAppointments([...realAppointments, appointment]);
+    console.log(setRealAppointments);
+  };
 
   return (
     <>
@@ -51,9 +43,17 @@ function App() {
       <div className="container">
         <div className="row">
           <div className="one-half column">
-            <Form />
+            <Form makeAppointment={makeAppointment} />
           </div>
-          <div className="one-half column" />
+          <div className="one-half column">
+            {realAppointments.map((appointment, index) => (
+              <Appointment
+                key={index}
+                index={index}
+                appointment={appointment}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </>
