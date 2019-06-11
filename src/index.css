@@ -82,7 +82,7 @@ input[type="time"] {
 }
 .deleteButton,
 .deleteButton:hover {
-  background-color: #c10059;
+  background-color: #17c100;
   color: white;
   margin-top: 2rem;
 }

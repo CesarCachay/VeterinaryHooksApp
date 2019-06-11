@@ -1,45 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Form from "./components/Form";
-
-function Appointment({ appointment, index, deleteAppointment }) {
-  return (
-    <div className="appointment">
-      <p>
-        Patient: <span>{appointment.patient}</span>
-      </p>
-      <p>
-        Owner: <span>{appointment.owner}</span>
-      </p>
-      <p>
-        Date: <span>{appointment.date}</span>
-      </p>
-      <p>
-        Time: <span>{appointment.time}</span>
-      </p>
-      <p>
-        Symptoms: <span>{appointment.symptoms}</span>
-      </p>
-      <input
-        onClick={() => deleteAppointment(index)}
-        type="submit"
-        className="deleteButton u-full-width"
-        value="Delete"
-      />
-    </div>
-  );
-}
+import Appointment from "./components/Appointment";
 
 function App() {
   //use State return 2 pieces
   // state = this.state
   // The function that update state is setState = this.setState()
-  const [realAppointments, setRealAppointments] = useState([]);
+  const [realAppointments, setRealAppointments] = useState(
+    JSON.parse(localStorage.getItem("realAppointments") || "[]")
+  );
 
   // Function that will allow us to create appointments
   const makeAppointment = appointment => {
     // This takes a copy of the state & concat the new appointment another way setRealAppointments(realAppointments.concat(appointment));
     setRealAppointments([...realAppointments, appointment]);
+    localStorage.setItem(
+      "realAppointments",
+      JSON.stringify([...realAppointments, appointment])
+    );
   };
 
   // This allow us to delete an Appointment
@@ -47,7 +26,28 @@ function App() {
     const newAppointments = [...realAppointments];
     newAppointments.splice(index, 1);
     setRealAppointments(newAppointments);
+    localStorage.setItem("realAppointments", JSON.stringify(newAppointments));
   };
+
+  // This will allow us to show appointments conditionally
+  const title =
+    Object.keys(realAppointments).length === 0
+      ? "No appointments yet"
+      : "Manage the appointments here";
+
+  // useEffect(() => {
+  //   let initialAppointments = JSON.parse(
+  //     localStorage.getItem(realAppointments)
+  //   );
+  //   if (initialAppointments) {
+  //     localStorage.setItem(
+  //       "realAppointments",
+  //       JSON.stringify(realAppointments)
+  //     );
+  //   } else {
+  //     localStorage.setItem(realAppointments, JSON.stringify([]));
+  //   }
+  // });
 
   return (
     <>
@@ -58,6 +58,7 @@ function App() {
             <Form makeAppointment={makeAppointment} />
           </div>
           <div className="one-half column">
+            <h2>{title}</h2>
             {realAppointments.map((appointment, index) => (
               <Appointment
                 key={index}

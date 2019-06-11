@@ -1,6 +1,9 @@
 import React from "react";
 
-function Appointment() {
+function Appointment({ appointment, index, deleteAppointment }) {
+  const handleClick = () => {
+    deleteAppointment(index);
+  };
   return (
     <div className="appointment">
       <p>
@@ -18,6 +21,7 @@ function Appointment() {
       <p>
         Symptoms: <span>{appointment.symptoms}</span>{" "}
       </p>
+      <button onClick={handleClick}>Delete</button>
     </div>
   );
 }
