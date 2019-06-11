@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import Form from "./components/Form";
 
-function Appointment({ appointment }) {
+function Appointment({ appointment, index, deleteAppointment }) {
   return (
     <div className="appointment">
       <p>
@@ -20,6 +20,12 @@ function Appointment({ appointment }) {
       <p>
         Symptoms: <span>{appointment.symptoms}</span>
       </p>
+      <input
+        onClick={() => deleteAppointment(index)}
+        type="submit"
+        className="deleteButton u-full-width"
+        value="Delete"
+      />
     </div>
   );
 }
@@ -34,7 +40,13 @@ function App() {
   const makeAppointment = appointment => {
     // This takes a copy of the state & concat the new appointment another way setRealAppointments(realAppointments.concat(appointment));
     setRealAppointments([...realAppointments, appointment]);
-    console.log(setRealAppointments);
+  };
+
+  // This allow us to delete an Appointment
+  const deleteAppointment = index => {
+    const newAppointments = [...realAppointments];
+    newAppointments.splice(index, 1);
+    setRealAppointments(newAppointments);
   };
 
   return (
@@ -51,6 +63,7 @@ function App() {
                 key={index}
                 index={index}
                 appointment={appointment}
+                deleteAppointment={deleteAppointment}
               />
             ))}
           </div>

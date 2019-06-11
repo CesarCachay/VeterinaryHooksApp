@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 
-function Form({ makeAppointment }) {
-  const [appointments, setAppointments] = useState({
-    patient: "",
-    owner: "",
-    date: "",
-    time: "",
-    symptoms: ""
-  });
+const initialState = {
+  patient: "",
+  owner: "",
+  date: "",
+  time: "",
+  symptoms: ""
+};
 
+function Form({ makeAppointment }) {
+  // appointment = state actual
+  // setAppointments = function that allow us to change the state
+  const [appointments, setAppointments] = useState(initialState);
+
+  // This updates the state
   const handleChange = e => {
     setAppointments({
       ...appointments, //it makes a copy of the current value of the state appointment
@@ -16,18 +21,12 @@ function Form({ makeAppointment }) {
     });
   };
 
+  // transfer the apointment to the main component
   const handleSubmit = e => {
     e.preventDefault();
-    // transfer the apointment to the main component
     makeAppointment(appointments);
     // It will allow to restart the state
-    setAppointments({
-      patient: "",
-      owner: "",
-      date: "",
-      time: "",
-      symptoms: ""
-    });
+    setAppointments(initialState);
   };
 
   return (
